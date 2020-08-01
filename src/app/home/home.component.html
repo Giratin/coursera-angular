@@ -33,6 +33,11 @@
         </mat-card-content>
     </mat-card>
 
+    <div [hidden]="promotion">
+        <mat-spinner></mat-spinner>
+        <h4>Loading . . . Please Wait</h4>
+    </div>
+
     <mat-card *ngIf="leader" fxFlex>
         <mat-card-header>
             <div mat-card-avatar></div>
