@@ -1,6 +1,6 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.gt-md="space-around center" fxLayoutGap="10px">
 
-    <mat-card *ngIf="dish" fxFlex>
+    <mat-card *ngIf="dish" [@expand] fxFlex>
         <mat-card-header>
             <div mat-card-avatar></div>
             <mat-card-title>
@@ -13,7 +13,7 @@
             </p>
         </mat-card-content>
     </mat-card>
-
+    
     <div [hidden]="dish || dishErrMess">
         <mat-spinner></mat-spinner>
         <h4>Loading . . . Please Wait</h4>
@@ -24,7 +24,7 @@
             <h4>{{dishErrMess}}</h4>
     </div>
 
-    <mat-card *ngIf="promotion" fxFlex>
+    <mat-card *ngIf="promotion" [@expand] fxFlex>
         <mat-card-header>
             <div mat-card-avatar></div>
             <mat-card-title>
@@ -43,7 +43,7 @@
         <h4>Loading . . . Please Wait</h4>
     </div>
 
-    <mat-card *ngIf="leader" fxFlex>
+    <mat-card *ngIf="leader"  [@expand] fxFlex>
         <mat-card-header>
             <div mat-card-avatar></div>
             <mat-card-title>
