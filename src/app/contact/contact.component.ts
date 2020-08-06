@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { flyInOut } from '../animations/app.animation';
+import { expand, flyInOut, visibility } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 import { Feedback, ContactType } from '../shared/feedback';
 
 @Component({
@@ -12,7 +13,8 @@ import { Feedback, ContactType } from '../shared/feedback';
     'style': 'display: block;'
     },
     animations: [
-      flyInOut()
+      flyInOut(),
+      expand()
     ]
 })
 export class ContactComponent implements OnInit {
@@ -51,7 +53,10 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private feedbackService: FeedbackService 
+    ) {
     this.createForm();
   }
 
@@ -96,9 +101,37 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  submitting = false;
+  showForm = true;
+  errFeedbackMsg: string;
+  feedbackToShow : Feedback;
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.submitting= true;
+    this.showForm = false;
+    this.feedbackService.submitFeedback(this.feedback).subscribe(
+      (res)=>{
+        this.submitting = false;
+        this.feedbackToShow = <Feedback>res;
+        setTimeout(()=>{
+          this.feedbackToShow = null;
+          this.resetMyForm();
+          this.showForm = true;
+        },5000)
+        
+      },
+      (err)=>{
+        this.submitting = false;
+        this.showForm = true;
+        //console.log("error is", err)
+        this.resetMyForm();
+        this.errFeedbackMsg = <any> err;
+      }
+    )
+    
+  }
+
+  resetMyForm(){
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -108,7 +141,7 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
-    this.feedbackFormDirective.resetForm();
+    //this.feedbackFormDirective.resetForm();
   }
 
 }
