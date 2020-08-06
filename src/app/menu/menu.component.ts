@@ -10,9 +10,9 @@ import { DishService } from '../services/dish.service';
 export class MenuComponent implements OnInit {
 
   dishes: Dish[];
-
   selectedDish: Dish;
-   
+  errMess: string;
+
   constructor(
     private dishService: DishService,
     @Inject('BaseURL') private baseURL,
@@ -25,7 +25,9 @@ export class MenuComponent implements OnInit {
         dish.image = this.baseURL + dish.image;
         return dish;
       })
-    });
+    },
+    errmess => this.errMess = <any>errmess
+    );
 
     console.log(this.baseURL)
   }
